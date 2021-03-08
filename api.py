@@ -13,6 +13,8 @@ app.secret_key = "cloud computing cs5412 - hw2"
 shopping_cart = DHTServerStore(5)
 
 
+# Shopping Cart Methods
+
 def get_product_items(customer_id):
     key = utils.hash_key(customer_id)
     value = shopping_cart.get_item(key)
@@ -33,6 +35,8 @@ def delete_shopping_cart(customer_id):
     shopping_cart.put_item(key, None)
     return checkout_items
 
+
+# Shopping Card Endpoints
 
 @app.route("/items/<string:customer_id>", methods=["GET"])
 def list_items(customer_id):
@@ -95,6 +99,11 @@ def delete_item_from_cart(customer_id, item_id):
 
 @app.route("/items/<string:customer_id>", methods=["DELETE"])
 def delete_cart(customer_id):
+    delete_shopping_cart(customer_id)
+    return jsonify({})
+
+@app.route("/checkout/<string:customer_id>", methods=["POST"])
+def checkout_cart(customer_id):
     checkout_items = delete_shopping_cart(customer_id)
     return jsonify(checkout_items)
 

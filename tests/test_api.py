@@ -74,8 +74,8 @@ def test_api():
         assert items[0]["offeredPrice"] == 10, "Price is not correct"
         print('4/5: Removed one product from Cart')
 
-        # Delete cart (Checkout)
-        rv = client.delete(f"/items/{username}")
+        # Checkout
+        rv = client.post(f"/checkout/{username}")
         checkout_items = rv.get_json()
         assert (
             sum(item["unitCount"] * item["offeredPrice"] for item in checkout_items)
