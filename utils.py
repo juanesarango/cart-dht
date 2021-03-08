@@ -8,7 +8,8 @@ import hashlib
 
 def hash_key(string, bit_size=64):
     """Hash string into a 64-bit size integer."""
-    return int(hashlib.sha1(string.encode("utf-8")).hexdigest(), 16) % (2 ** bit_size)
+    hashed_string = hashlib.sha1(string.encode("utf-8")).hexdigest()
+    return int(hashed_string, 16) % (2 ** (bit_size -1))
 
 
 def serialize_value(value):
@@ -18,7 +19,7 @@ def serialize_value(value):
 
 def deserialize_value(serialized_value):
     """Decode bytes back into an object."""
-    return json.loads(serialized_value.decode("utf-8"))
+    return json.loads(serialized_value.decode("utf-8")) if serialized_value else []
 
 
 # Datetime utils

@@ -32,12 +32,12 @@ class DHTServer:
 
     def validate_key(self, key):
         """Check key is a 64-bit integer."""
-        if key.isdigit() and not key.bit_length() < 64:
+        if not key.bit_length() < 64:
             raise TypeError(f"Key is not a 64-bit integer: {key}")
 
     def validate_value(self, value):
         """Check value is a byte-array."""
-        if not isinstance(value, bytearray):
+        if value and not isinstance(value, bytearray):
             raise TypeError(f"Value is not a byte array: {value}")
 
 
@@ -58,20 +58,11 @@ class DHTServerStore:
     def put_item(self, key, value):
         """Update value in shard and bumping its version."""
         shard = self.store[key % self.size]
-        version, value = shard.get_item(key)
-        return self.store[key % self.size].put_item(key, value, version + 1)
+        version, _ = shard.get_item(key)
+        desired_version = version + 1 if version else 0
+        return self.store[key % self.size].put_item(key, value, desired_version)
 
 
 if __name__ == "__main__":
 
     shopping_cart = DHTServerStore(5)
-
-    shopping_item = {
-        "customerId": "jea265",
-        "itemId": "03600029145",
-        "offeredPrice": 250,
-        "unitCount": 2,
-        "timestamp": "2021-03-08 01:50:57",
-        "specialSale": True,
-        "saleExpiration": "2021-03-31 11:59:59",
-    }

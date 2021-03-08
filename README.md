@@ -1,6 +1,6 @@
-# Shopping Cart Service
+# Shopping Cart Service 🛒
 
-The folllowing service uses an implementation of an API using a sharded Ditributed Hash Table (DHT) in the backend.
+The following service uses an implementation of an API using a sharded Ditributed Hash Table (DHT) in the backend.
 
 ## Content
 
@@ -11,7 +11,13 @@ The folllowing service uses an implementation of an API using a sharded Ditribut
 
 - The `api.py` has the main endpoint methods to respond to user interactions.
 
-TODO: Endpoints table
+| Endpoint                      |  Method  |                          Body Data                           |           Description           |
+| :---------------------------- | :------: | :----------------------------------------------------------: | :-----------------------------: |
+| `/items/<customerId>`         |  `GET`   |                                                              |    List shopping Cart items     |
+| `/item/<customerId>/<itemId>` |  `POST`  | `offeredPrice`, `itemCount`, `specialSale`, `saleExpiration` |     Add Item to Cart (Buy)      |
+| `/item/<customerId>/<itemId>` |  `PUT`   |                          `newCount`                          |        Update item count        |
+| `/item/<customerId>/<itemId>` | `DELETE` |                              ``                              |      Delete Item from Cart      |
+| `/items/<customerId>`         | `DELETE` |                              ``                              | Delete Customer Cart (Checkout) |
 
 - The `utils.py` have useful methods to hash, serialize and parse date objects.
 
@@ -23,7 +29,12 @@ pip install -r requirements.txt
 
 # Run the api server
 export FLASK_APP=api.py
+export FLASK_ENV=development
 flask run
 ```
 
 ## Run Tests
+
+```bash
+pytest tests
+```
