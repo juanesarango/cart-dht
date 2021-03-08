@@ -1,4 +1,4 @@
-"""A sharded Distributed Hash Table (DHT) implementation for a Shoping Cart service."""
+"""A sharded Distributed Hash Table (DHT) implementation for a Shopping Cart service."""
 
 
 class DHTServer:

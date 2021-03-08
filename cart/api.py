@@ -4,8 +4,8 @@ from datetime import datetime
 
 from flask import Flask, jsonify, request
 
-import utils
-from store import DHTServerStore
+from cart import utils
+from cart.store import DHTServerStore
 
 app = Flask(__name__)
 app.secret_key = "cloud computing cs5412 - hw2"
