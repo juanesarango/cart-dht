@@ -9,15 +9,14 @@ from store import DHTServerStore
 
 app = Flask(__name__)
 app.secret_key = "cloud computing cs5412 - hw2"
-
-shopping_cart = DHTServerStore(5)
+app.shopping_cart = DHTServerStore(5)
 
 
 # Shopping Cart Methods
 
 def get_product_items(customer_id):
     key = utils.hash_key(customer_id)
-    value = shopping_cart.get_item(key)
+    value = app.shopping_cart.get_item(key)
     return utils.deserialize_value(value)
 
 
@@ -25,14 +24,14 @@ def update_product_items(customer_id, product_items):
     product_items = [item for item in product_items if item["unitCount"] > 0]
     key = utils.hash_key(customer_id)
     value = utils.serialize_value(product_items)
-    shopping_cart.put_item(key, value)
+    app.shopping_cart.put_item(key, value)
 
 
 def delete_shopping_cart(customer_id):
     key = utils.hash_key(customer_id)
-    value = shopping_cart.get_item(key)
+    value = app.shopping_cart.get_item(key)
     checkout_items = utils.deserialize_value(value)
-    shopping_cart.put_item(key, None)
+    app.shopping_cart.put_item(key, None)
     return checkout_items
 
 

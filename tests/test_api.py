@@ -86,3 +86,9 @@ def test_api():
         items = rv.get_json()
         assert not items and items == [], "Cart should be empty"
         print('5/5: Checkout product cart and deleted')
+
+
+
+def test_performance():
+
+    assert app.shopping_cart.size == 5
