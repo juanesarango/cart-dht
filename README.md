@@ -1,0 +1,1 @@
+- Python uses Garbage Collection
