@@ -64,7 +64,7 @@ class DHTServerStore:
 
 if __name__ == "__main__":
 
-    store = DHTServerStore(5)
+    shopping_cart = DHTServerStore(5)
 
     shopping_item = {
         "customerId": "jea265",
