@@ -45,6 +45,8 @@ flask run
 
 ## Run Tests
 
+Run tests with mockup data for main endpoints.
+
 ```bash
 pytest tests
 ```
