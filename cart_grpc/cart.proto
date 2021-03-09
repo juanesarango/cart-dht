@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package cart;
+
+// The shopping cart service definition.
+service Shopper {
+  rpc GetItem (ItemRequest) returns (ItemReply) {}
+
+  rpc WriteItem (ItemReply) returns (ItemStatus) {}
+}
+
+message ItemRequest {
+  int64 key = 1;
+}
+
+message ItemReply {
+  int64 key = 1;
+  string value = 2;
+}
+
+message ItemStatus {
+  string result = 1;
+}
