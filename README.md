@@ -72,3 +72,45 @@ These are the results of one run:
 Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow in magnitude.
 
 ![](benchmark/runtimes_vs_n.png)
+
+# Run Client-Server using gRPC
+
+Build from proto file:
+
+```bash
+python -m grpc_tools.protoc \
+    --proto_path=. \
+    --python_out=. \
+    --grpc_python_out=. \
+    cart.proto
+```
+
+# Tests
+
+Run DHT servers:
+
+```bash
+python grpc/cart_server.py
+```
+
+Run API client:
+
+```bash
+python grpc/cart_client.py
+```
+
+# Tests
+
+Run DHT servers:
+
+```bash
+python grpc/cart_dht_server.py
+```
+
+Run API client:
+
+```bash
+python grpc/cart_api_client.py
+```
+
+⚠️ My implementation is work in progress has a 95% working gRPC communication between the api flask clients and DHT servers.

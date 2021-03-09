@@ -1,2 +1,4 @@
 Flask==1.1.2
 pytest==6.2.2
+grpcio==1.36.1
+grpcio-tools==1.36.1
