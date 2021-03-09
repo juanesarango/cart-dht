@@ -67,6 +67,6 @@ These are the results of one run:
 | 1000           |             92164             |                1062                |                    93226                    |
 | 10000          |             91372             |                1226                |                    92598                    |
 
-Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow.
+Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow in magnitude.
 
 ![](benchmark/runtimes_vs_n.png)
