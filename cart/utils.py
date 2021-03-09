@@ -22,6 +22,15 @@ def deserialize_value(serialized_value):
     return json.loads(serialized_value.decode("utf-8")) if serialized_value else []
 
 
+def to_string(value):
+    """Convert object into a string."""
+    return json.dumps(value)
+
+
+def from_string(serialized_value):
+    """Decode string back into an object."""
+    return json.loads(serialized_value) if serialized_value else []
+
 # Datetime utils
 
 

@@ -15,7 +15,7 @@ class DHTServer:
 
     def put_item(self, key, value, desired_version):
         """Update value from key only if version is correct. Delete if none."""
-        self.validate_value(value)
+        # self.validate_value(value)
 
         # Fail if version is drifted
         current_version, _ = self.get_item(key)

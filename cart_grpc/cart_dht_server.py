@@ -1,12 +1,15 @@
 """Client DHT making queries."""
+import sys
+import os
+
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+
 from concurrent import futures
 import logging
-
 import grpc
 
-import cart_pb2
-import cart_pb2_grpc
-
+from cart_grpc import cart_pb2
+from cart_grpc import cart_pb2_grpc
 from cart import utils
 from cart.store import DHTServerStore
 
@@ -16,9 +19,10 @@ class Shopper(cart_pb2_grpc.ShopperServicer):
 
     def GetItem(self, request, context):
         value = shopping_cart.get_item(request.key)
+        print(f'Server Value: {value}')
         return cart_pb2.ItemReply(
             key=request.key,
-            value=str(value)
+            value=utils.to_string(value)
         )
 
     def WriteItem(self, request, context):

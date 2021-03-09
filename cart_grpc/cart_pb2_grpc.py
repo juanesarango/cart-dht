@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import cart_pb2 as cart__pb2
+from cart_grpc import cart_pb2 as cart__pb2
 
 
 class ShopperStub(object):
