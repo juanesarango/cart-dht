@@ -5,47 +5,25 @@ from datetime import datetime
 from flask import Flask, jsonify, request
 
 from cart import utils
-from cart.store import DHTServerStore
+from cart.db import ShoppingCartService
+
+shopping_cart = ShoppingCartService(5)
 
 app = Flask(__name__)
 app.secret_key = "cloud computing cs5412 - hw2"
-app.shopping_cart = DHTServerStore(5)
-
-
-# Shopping Cart Methods
-
-def get_product_items(customer_id):
-    key = utils.hash_key(customer_id)
-    value = app.shopping_cart.get_item(key)
-    return utils.deserialize_value(value)
-
-
-def update_product_items(customer_id, product_items):
-    product_items = [item for item in product_items if item["unitCount"] > 0]
-    key = utils.hash_key(customer_id)
-    value = utils.serialize_value(product_items)
-    app.shopping_cart.put_item(key, value)
-
-
-def delete_shopping_cart(customer_id):
-    key = utils.hash_key(customer_id)
-    value = app.shopping_cart.get_item(key)
-    checkout_items = utils.deserialize_value(value)
-    app.shopping_cart.put_item(key, None)
-    return checkout_items
-
+app.shopping_cart = shopping_cart
 
 # Shopping Card Endpoints
 
 @app.route("/items/<string:customer_id>", methods=["GET"])
 def list_items(customer_id):
-    product_items = get_product_items(customer_id)
+    product_items = shopping_cart.get_product_items(customer_id)
     return jsonify(product_items)
 
 
 @app.route("/items/<string:customer_id>/<int:item_id>", methods=["POST"])
 def add_item_to_cart(customer_id, item_id):
-    product_items = get_product_items(customer_id)
+    product_items = shopping_cart.get_product_items(customer_id)
 
     new_item = request.get_json()
     new_item["itemId"] = item_id
@@ -66,14 +44,14 @@ def add_item_to_cart(customer_id, item_id):
         new_item["unitCount"] += current_unit_count
 
     product_items.append(new_item)
-    update_product_items(customer_id, product_items)
+    shopping_cart.update_product_items(customer_id, product_items)
 
     return jsonify(new_item)
 
 
 @app.route("/items/<string:customer_id>/<int:item_id>", methods=["PUT"])
 def update_item_count(customer_id, item_id):
-    product_items = get_product_items(customer_id)
+    product_items = shopping_cart.get_product_items(customer_id)
     new_count = request.get_json()["newCount"]
 
     # if item exist already merge count
@@ -83,27 +61,27 @@ def update_item_count(customer_id, item_id):
             item["unitCount"] = new_count
             updated_item = item
 
-    update_product_items(customer_id, product_items)
+    shopping_cart.update_product_items(customer_id, product_items)
     return jsonify(updated_item)
 
 
 @app.route("/items/<string:customer_id>/<int:item_id>", methods=["DELETE"])
 def delete_item_from_cart(customer_id, item_id):
-    product_items = get_product_items(customer_id)
+    product_items = shopping_cart.get_product_items(customer_id)
     product_items = [item for item in product_items if item["itemId"] != item_id]
-    update_product_items(customer_id, product_items)
+    shopping_cart.update_product_items(customer_id, product_items)
 
     return jsonify({})
 
 
 @app.route("/items/<string:customer_id>", methods=["DELETE"])
 def delete_cart(customer_id):
-    delete_shopping_cart(customer_id)
+    shopping_cart.delete_shopping_cart(customer_id)
     return jsonify({})
 
 @app.route("/checkout/<string:customer_id>", methods=["POST"])
 def checkout_cart(customer_id):
-    checkout_items = delete_shopping_cart(customer_id)
+    checkout_items = shopping_cart.delete_shopping_cart(customer_id)
     return jsonify(checkout_items)
 
 

@@ -2,6 +2,7 @@ import datetime
 
 from cart.api import app
 from cart.store import DHTServerStore
+from cart.db import ShoppingCartService
 
 
 def parse_microseconds(dt):
@@ -20,11 +21,10 @@ def run_several_times():
 
 def test_performance():
     """Measure Cart Operations for several shard sizes."""
-
     times = {}
     for shard_number in [1, 10, 100, 1000, 10000]:
 
-        app.shopping_cart = DHTServerStore(shard_number)
+        app.shopping_cart = ShoppingCartService(shard_number)
         with app.test_client() as client:
 
             init_time = datetime.datetime.now()
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     print(f"N\tBuying\tCheckout\tTotal")
     for shard_number in [1, 10, 100, 1000, 10000]:
         a = times[shard_number]
-        print(f"{shard_number}\t{a['buying']}\t{a['checkout']}\t{a['total']}")
+        print(f"{shard_number}\t{a['buying']}\t{a['checkout']}\t\t{a['total']}")
