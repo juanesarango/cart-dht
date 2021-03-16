@@ -1,4 +1,7 @@
+
 # Shopping Cart Service 🛒
+
+Project Repo: https://github.com/juanesarango/cart-dht.git
 
 The following service uses an implementation of an API using a sharded Ditributed Hash Table (DHT) in the backend.
 
@@ -42,7 +45,7 @@ The backend is setup in a CosmosDb Table named `ShoppingCartTable`. Each record 
 - The `PartitionKey` of each shard is defined by the modulo of this 64-bit integer with the total of shards, which is a dynamic parameter that can be configured; prunning it to 3 digits and adding a Prefix `ShoppingCart`. For example, if the hash of the customer id is `5936179978787426786`, and the number of shards is 5, then the `PartitionKey` is `ShoppingCart001`.
 - Each row of the table only stores 2 values besides the required fields and the timestamp:  `CustomerId` and `ProductItems`, that are the unhashed `customerId` and the whole list of Items as a string.
 
-![](benchmark/azure-screenshot.png)
+![](results/azure-screenshot.png)
 
 ## Setup and Running
 
@@ -101,9 +104,7 @@ These are the results of one run:
 | 1000           |             92164             |                1062                |                    93226                    |
 | 10000          |             91372             |                1226                |                    92598                    |
 
-Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow in magnitude.
-
-![](benchmark/runtimes_vs_n.png)
+![](results/local_tests.png)
 
 ### Running in Azure:
 ```bash
@@ -118,3 +119,12 @@ These are the results of one run:
 | 100 | 8610234  | 81568 | 8691802 |
 | 1000    | 7948652 | 89714    | 8038366 |
 | 10000   | 8079101    | 80263   | 8159364 |
+
+![](results/azure_tests.png)
+
+
+### Plotting both
+
+Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow in several orders of magnitude. Azure is almost 10X slower, this can be expect as the backend is remote, there's some transfer latency and because the plan in Azure is Serverless with probably not a lot of throughput for the Student accounts.
+
+![](results/both_tests.png)
