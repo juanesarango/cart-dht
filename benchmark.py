@@ -1,7 +1,6 @@
 import datetime
 
 from cart.api import app
-from cart.db import ShoppingCartService
 
 
 def parse_microseconds(dt):
@@ -24,7 +23,6 @@ def test_performance():
     times = {}
     for shard_number in [1, 10, 100, 1000, 10000]:
 
-        app.shopping_cart = ShoppingCartService(shard_number)
         with app.test_client() as client:
 
             init_time = datetime.datetime.now()

@@ -10,14 +10,14 @@ def test_api():
         upc_1 = "036000291459"
         upc_2 = "987243752377"
 
-        checkout = False
+        checkout = False # flag to clean cart at the end
 
-        # Get Empty Cart
+        # Initialize Empty Cart
         client.delete(f"/items/{username}")
         rv = client.get(f"/items/{username}")
         items = rv.get_json()
         assert not items and items == [], f"Cart should be empty: {items}"
-        print("\n✅ 1/5: Cart Empty")
+        print("\n✅ 1/5: Cart is Empty")
 
         # Add items to cart
         client.post(

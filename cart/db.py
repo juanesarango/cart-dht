@@ -15,28 +15,19 @@ from cart.local_store import DHTServerStore
 # Get Azure Credentials
 load_dotenv()
 
-CONNECTION_STRING = os.getenv("AZURE_COSMOS_CONNECTION_STRING")
-if not CONNECTION_STRING:
-    ACCOUNT_KEY = os.getenv("AZURE_COSMOS_ACCOUNT_KEY")
-    ACCOUNT_NAME = os.getenv("AZURE_COSMOS_ACCOUNT_NAME")
-    TABLE_ENDPOINT = os.getenv("AZURE_COSMOS_TABLE_ENDPOINT")
-    CONNECTION_STRING = (
-        f"DefaultEndpointsProtocol=https;"
-        f"AccountName={ACCOUNT_NAME};"
-        f"AccountKey={ACCOUNT_KEY};"
-        f"TableEndpoint={TABLE_ENDPOINT};"
-    )
-
 class ShoppingCartServiceCloud:
     """Shopping Cart Methods called from the API to interact with the DB."""
 
     def __init__(self, shards=1):
         self.shards = shards
         self.table_name = "ShoppingCartTable"
-        self.db = TableService(
-            endpoint_suffix="table.cosmos.azure.com",
-            connection_string=CONNECTION_STRING,
-        )
+        try:
+            self.db = TableService(
+                endpoint_suffix="table.cosmos.azure.com",
+                connection_string=os.getenv("AZURE_COSMOS_CONNECTION_STRING"),
+            )
+        except ValueError:
+            raise Exception("Please initialize $AZURE_COSMOS_CONNECTION_STRING")
         try:
             self.db.create_table(self.table_name, fail_on_exist=True)
         except AzureConflictHttpError:
