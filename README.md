@@ -1,5 +1,9 @@
 
 # Shopping Cart Service 🛒
+```
+Juan E. Arango - jea265@cornell.edu
+CS 5412 - Cloud Computing Spring 2021
+```
 
 Project Repo: https://github.com/juanesarango/cart-dht.git
 
