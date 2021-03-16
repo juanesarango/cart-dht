@@ -1,19 +1,24 @@
 """Main API shopping cart."""
 import json
+import os
 from datetime import datetime
-
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
 from cart import utils
-from cart.db import ShoppingCartService
+from cart.db import ShoppingCartServiceLocal, ShoppingCartServiceCloud
 
-shopping_cart = ShoppingCartService(5)
+load_dotenv()
+if os.getenv("DB_TYPE") == "Azure":
+    print("Connecting to Azure CosmosDb...")
+    shopping_cart = ShoppingCartServiceCloud(5)
+else:
+    print("Creating Local DHT as db...")
+    shopping_cart = ShoppingCartServiceLocal(5)
 
 app = Flask(__name__)
-app.secret_key = "cloud computing cs5412 - hw2"
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "")
 app.shopping_cart = shopping_cart
-
-# Shopping Card Endpoints
 
 @app.route("/items/<string:customer_id>", methods=["GET"])
 def list_items(customer_id):
@@ -78,6 +83,7 @@ def delete_item_from_cart(customer_id, item_id):
 def delete_cart(customer_id):
     shopping_cart.delete_shopping_cart(customer_id)
     return jsonify({})
+
 
 @app.route("/checkout/<string:customer_id>", methods=["POST"])
 def checkout_cart(customer_id):

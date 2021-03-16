@@ -4,7 +4,7 @@ The following service uses an implementation of an API using a sharded Ditribute
 
 ## Content of the files
 
-- The `store.py` has defined classes for the data backend:
+- The `dht.py` has defined classes for the data backend:
 
   - `DHTServer`: each of the instances storing the customer's shopping carts as key-value pairs.
   - `DHTServerStore`: the array of DHTServes, that distrubutes the i/o data across the shards.
@@ -48,7 +48,7 @@ flask run
 Run tests with mockup data for main endpoints.
 
 ```bash
-pytest tests
+pytest tests -s
 ```
 
 ## Benchmark
@@ -72,3 +72,14 @@ These are the results of one run:
 Running on 1000 runs and getting the average. The runtimes seem to be pretty constant even when DHT shards grow in magnitude.
 
 ![](benchmark/runtimes_vs_n.png)
+
+
+## Azure Credentials
+
+To access azure, you need to export the required credentials.
+
+
+```
+# .env
+export AZURE_COSMOS_CONNECTION_STRING=<connection-string>
+```

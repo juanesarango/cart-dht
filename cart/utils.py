@@ -9,7 +9,7 @@ import hashlib
 def hash_key(string, bit_size=64):
     """Hash string into a 64-bit size integer."""
     hashed_string = hashlib.sha1(string.encode("utf-8")).hexdigest()
-    return int(hashed_string, 16) % (2 ** (bit_size -1))
+    return int(hashed_string, 16) % (2 ** (bit_size - 1))
 
 
 def serialize_value(value):

@@ -1,12 +1,12 @@
 import datetime
 
 from cart.api import app
-from cart.store import DHTServerStore
 from cart.db import ShoppingCartService
 
 
 def parse_microseconds(dt):
-    return int(dt.total_seconds() * 10**6)
+    return int(dt.total_seconds() * 10 ** 6)
+
 
 def run_several_times():
     import pandas as pd
@@ -40,12 +40,12 @@ def test_performance():
             add_items_time = datetime.datetime.now()
             checkout_items = client.post(f"/checkout/{username}").get_json()
             checkout_time = datetime.datetime.now()
-            assert len(checkout_items) == 100, 'Checkout Items were not 100'
+            assert len(checkout_items) == 100, "Checkout Items were not 100"
 
             times[shard_number] = {
                 "buying": parse_microseconds(add_items_time - init_time),
                 "checkout": parse_microseconds(checkout_time - add_items_time),
-                "total": parse_microseconds(checkout_time - init_time)
+                "total": parse_microseconds(checkout_time - init_time),
             }
 
     return times
